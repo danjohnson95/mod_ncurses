@@ -17,6 +17,7 @@ jobs:
       LDFLAGS: "-L/opt/homebrew/opt/ncurses/lib"
       CPPFLAGS: "-I/opt/homebrew/opt/ncurses/include"
       PKG_CONFIG_PATH: "/opt/homebrew/opt/ncurses/lib/pkgconfig"
+      CFLAGS: "-Dulong=unsigned long"
 
     steps:
       - name: Checkout repository
@@ -35,7 +36,7 @@ jobs:
         run: phpize
 
       - name: Configure
-        run: ./configure
+        run: ./configure --with-ncurses=/opt/homebrew/opt/ncurses --enable-ncursesw
 
       - name: Make
         run: make
