@@ -5,7 +5,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        php: [8.1, 8.2, 8.3]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout repository
@@ -13,7 +19,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t mod_ncurses_image .
+          docker build --build-arg PHP_VERSION=${{ matrix.php }} -t mod_ncurses_image .
 
       - name: Run container
         run: |
@@ -26,7 +32,7 @@ jobs:
       - name: Upload Compiled Extension as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: linux
+          name: ${{ matrix.os }}-php${{ matrix.php }}-ext-ncurses
           path: ncurses.so
 
       - name: Cleanup
