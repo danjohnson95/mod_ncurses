@@ -13,6 +13,11 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
+    env:
+      LDFLAGS: "-L/opt/homebrew/opt/ncurses/lib"
+      CPPFLAGS: "-I/opt/homebrew/opt/ncurses/include"
+      PKG_CONFIG_PATH: "/opt/homebrew/opt/ncurses/lib/pkgconfig"
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,12 +25,6 @@ jobs:
       - name: Install ncurses
         run: |
           brew install ncurses
-
-      - name: Export paths
-        run: |
-          export LDFLAGS="-L/opt/homebrew/opt/ncurses/lib"
-          export CPPFLAGS="-I/opt/homebrew/opt/ncurses/include"
-          export PKG_CONFIG_PATH="/opt/homebrew/opt/ncurses/lib/pkgconfig"
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
