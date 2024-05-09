@@ -1,0 +1,37 @@
+name: Compile PHP Extension
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: |
+          docker build -t mod_ncurses_image .
+
+      - name: Run container
+        run: |
+          docker run -d --name mod_ncurses_container mod_ncurses_image
+
+      - name: Copy compiled extension from container
+        run: |
+          docker cp mod_ncurses_container:/usr/src/ext/modules/ncurses.so ./ncurses.so
+
+      - name: Upload Compiled Extension as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: ncurses.so
+
+      - name: Cleanup
+        if: always()
+        run: |
+          docker stop mod_ncurses_container
+          docker rm mod_ncurses_container
+          docker rmi mod_ncurses_image
