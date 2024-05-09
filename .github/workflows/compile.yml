@@ -35,7 +35,7 @@ jobs:
         run: phpize
 
       - name: Configure
-        run: ./configure --with-ncurses=/opt/homebrew/opt/ncurses --enable-ncursesw
+        run: ./configure
 
       - name: Make
         run: make
