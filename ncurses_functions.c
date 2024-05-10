@@ -25,6 +25,8 @@
 #include "php_ini.h"
 #include "php_ncurses.h"
 
+typedef unsigned long ulong;
+
 #if PHP_MAJOR_VERSION >= 7
 #define FETCH_WINRES(r, z) \
 	if (NULL == ((r) = (WINDOW **)zend_fetch_resource(Z_RES_P(*(z)), "ncurses_window", le_ncurses_windows))) { \
